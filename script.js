@@ -31,13 +31,15 @@
 
     // save the text value from the input within a variable
         // NOTE any info entered into an input element will always be available at the value property
-    const userToDo = inputElement.value;
+    
+    // STRETCH ERROR HANDLING GOAL: how do we avoid adding empty strings with multiple spaces? We can use the trim function to trim off extra whitespace
+    const userToDo = inputElement.value.trim();
         // console.log(userToDo);
 
     // NOTE form inputs ALWAYS return values as strings (even if they are numbers)
 
     // If the user submits a to-do (check whether the value of the input is NOT empty) then:
-        // STRETCH ERROR HANDLING GOAL: how do we avoid adding empty strings with multiple spaces?
+
     if (userToDo !== "") {
 
         // create a li element 
@@ -67,9 +69,32 @@
     } else {
         alert("Please enter a valid task! Dont leave this field empty");
     }
+    })
 
     // 3) Tracking when the task is done
+    // first query the DOM for our icon and save the returned DOM node within a variable. I'm commenting this out as we actually have to move it to within the function loop that happens once an li has already been added
+    // const iElement = document.querySelector('i');
 
-        // tbc
+    // add a click event listener and attach it to our icon
+    // if we use this style of event listener add, where it attaches to the checkbox, it won't work because that doesn't exist on the page at page load, where this is trying to load (it generates an error)
+    // iElement.addEventListener('click', function(){
+    //     console.log('a click has occurred!');
+    // })
 
+    // instead we can add it to the parent element of the icon that DOES exist on page load
+    // we can use the event object to find out exactly where the event occurred and hone in on that specific icon
+    ulElement.addEventListener('click', function(event){
+
+        // we only want to make the checkbox checked off when the checkbox is clicked, not the li, so we can use the tagName property of the event object to see what was clicked. we want to isolate where the click event occurs - ONLY if it occurs on the icon do we want to run the code to update "checking the checkbox" (aka updating the rendered FA icon)
+        if (event.target.tagName === 'I') {
+
+            const iElement = event.target;
+
+            // toggle the fontawesome icon class so that if it's checked it should be unchecked and vice versa
+            iElement.classList.toggle('fa-square');
+            iElement.classList.toggle('fa-square-check');
+        }
     })
+
+
+    
